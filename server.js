@@ -2,10 +2,19 @@
 const express = require("express");
 const server = express();
 const cors = require("cors");
-server.use(cors({ credentials: true, origin: "http://localhost:3000", "https://christiharlow-blog-frontend.herokuapp.com/"" }));
+const bcrypt = require("bcrypt");
+server.use(
+    cors({
+        credentials: true,
+        origin: [
+            "http://localhost:3000",
+            "https://christiharlow-blog-frontend.herokuapp.com",
+        ],
+    })
+);
 const bodyParser = require("body-parser");
 server.use(bodyParser.json());
-const bcrypt = require("bcrypt");
+
 // require means npm install
 const sessions = require("express-session");
 const { db, User, Post } = require("./db/db.js"); // #2 , #8 DB setup
@@ -110,39 +119,14 @@ server.get("/author/:id", async (req, res) => {
     res.send({ posts: await Post.findAll({ authorID: req.params.id }) });
 });
 
+// if heroku, process.env.PORT will be provided
 let port = process.env.PORT;
 if (!port) {
-    port 3001;
+    // otherwise, fallback to localhost 3001
+    port = 3001;
 }
 
 //#9 run express API server in background to listen for incoming requests
 server.listen(3001, () => {
     console.log("Server running.");
 });
-
-//#10 seeding the database
-const createFirstUser = async () => {
-    const users = await User.findAll();
-    if (users.length === 0) {
-        User.create({
-            username: "max",
-            password: bcrypt.hashSync("supersecret", 10),
-        });
-    }
-};
-
-createFirstUser();
-
-const createSecondUser = async () => {
-    const secondUser = await User.findOne({
-        where: { username: "testymctesterson" },
-    });
-    if (!secondUser) {
-        User.create({
-            username: "testymctesterson",
-            password: bcrypt.hashSync("secret", 10),
-        });
-    }
-};
-
-createSecondUser();
