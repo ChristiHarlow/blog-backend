@@ -26,12 +26,27 @@ const db = new Sequelize(databaseURL, options);
 const User = require("./User")(db);
 const Post = require("./Post")(db);
 
+//#10 seeding the database
+const createSecondUser = async () => {
+    const secondUser = await User.findOne({
+        where: { username: "testymctesterson" },
+    });
+    if (!secondUser) {
+        User.create({
+            username: "testymctesterson",
+            password: bcrypt.hashSync("secret", 10),
+        });
+    }
+};
+
 //#5 connect and sync to DB
 const connectToDB = async () => {
     try {
         await db.authenticate();
         console.log("Connected successfully");
-        db.sync(); //#6 sync by creating the tables based off our models if they don't exist already
+        await db.sync(); //#6 sync by creating the tables based off our models if they don't exist already
+        await createFirstUser();
+        await createSecondUser();
     } catch (error) {
         console.error(error);
         console.error("PANIC! DB PROBLEMS!");
