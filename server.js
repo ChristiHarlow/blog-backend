@@ -110,6 +110,11 @@ server.get("/author/:id", async (req, res) => {
     res.send({ posts: await Post.findAll({ authorID: req.params.id }) });
 });
 
+let port = process.env.PORT;
+if (!port) {
+    port 3001;
+}
+
 //#9 run express API server in background to listen for incoming requests
 server.listen(3001, () => {
     console.log("Server running.");
