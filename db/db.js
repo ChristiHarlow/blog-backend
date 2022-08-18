@@ -10,7 +10,7 @@ if (!databaseURL) {
         logging: false,
     };
 } else {
-    // we're not on localhost
+    // we're not on localhost!
     options = {
         logging: false,
         dialectOptions: {
