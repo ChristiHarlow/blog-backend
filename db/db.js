@@ -1,5 +1,6 @@
 //#3 setup DB models
 const Sequelize = require("sequelize");
+const bcrypt = require("bcrypt");
 
 let options = {};
 let databaseURL = process.env.DATABASE_URL;

@@ -3,6 +3,7 @@ const express = require("express");
 const server = express();
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+
 server.use(
     cors({
         credentials: true,
@@ -23,7 +24,7 @@ const oneMonth = 1000 * 60 * 60 * 24 * 30;
 server.use(
     sessions({
         secret: "mysecretkey",
-        store: new SequelizeStore({ db }),
+        store: new sequelizeStore({ db }),
         cookie: { maxAge: oneMonth },
     })
 );
