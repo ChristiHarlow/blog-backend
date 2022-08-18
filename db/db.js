@@ -27,6 +27,16 @@ const User = require("./User")(db);
 const Post = require("./Post")(db);
 
 //#10 seeding the database
+const createFirstUser = async () => {
+    const users = await User.findAll();
+    if (users.length === 0) {
+        User.create({
+            username: "max",
+            password: bcrypt.hashSync("supersecret", 10),
+        });
+    }
+};
+//#10 seeding the database
 const createSecondUser = async () => {
     const secondUser = await User.findOne({
         where: { username: "testymctesterson" },
