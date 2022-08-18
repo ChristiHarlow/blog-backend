@@ -24,7 +24,7 @@ const oneMonth = 1000 * 60 * 60 * 24 * 30;
 server.use(
     sessions({
         secret: "mysecretkey",
-        store: new sequelizeStore({ db }),
+        store: new SequelizeStore({ db }),
         cookie: { maxAge: oneMonth },
     })
 );
