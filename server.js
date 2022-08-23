@@ -54,6 +54,23 @@ server.post("/login", async (req, res) => {
     }
 });
 
+server.post("/createAccount", async (req, res) => {
+    const userWithThisUsername = await User.findOne({
+        where: { username: req.body.username },
+    });
+    if (userWithThisUsername) {
+        res.send({
+            error: "Username is already taken. Go fish!",
+        });
+    } else {
+        User.create({
+            username: req.body.username,
+            password: bcrypt.hashSync(req.body.password, 10),
+        });
+        res.send({ success: true });
+    }
+});
+
 server.get("/loginStatus", (req, res) => {
     if (req.session.user) {
         res.send({ isLoggedIn: true });

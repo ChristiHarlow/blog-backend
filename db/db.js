@@ -6,7 +6,7 @@ let options = {};
 let databaseURL = process.env.DATABASE_URL;
 if (!databaseURL) {
     // this means we're on localhost!
-    databaseURL = "postgres://hackupstate@localhost:5432/blog";
+    databaseURL = "postgres://christiharlow@localhost:5432/blog";
     options = {
         logging: false,
     };
@@ -62,6 +62,8 @@ const connectToDB = async () => {
         console.error(error);
         console.error("PANIC! DB PROBLEMS!");
     }
+
+    Post.belongsTo(User, { foreignKey: "userID" });
 };
 
 connectToDB();
